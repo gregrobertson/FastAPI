@@ -1,11 +1,12 @@
 from fastapi import APIRouter
-from queiries.vacations import VacationIn
+from queries.vacations import VacationIn
 
 #used to define GET, POST, etc.
 router = APIRouter()
 
 #POST (endpoint)
 @router.post("/vacations")
+#from queries
 def create_vacation(vacation: VacationIn):
     print('vacation', vacation.name)
     return vacation
