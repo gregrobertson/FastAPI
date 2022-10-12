@@ -1,12 +1,17 @@
-from fastapi import APIRouter
-from queries.vacations import VacationIn
+from fastapi import APIRouter, Depends, Response
+from typing import Union
+from queries.vacations import Error, VacationIn, VacationRepository, VacationOut
 
 #used to define GET, POST, etc.
 router = APIRouter()
 
-#POST (endpoint)
-@router.post("/vacations")
+#POST (endpoint , what we want to show)
+@router.post("/vacations", response_model=Union[VacationOut, Error])
 #from queries
-def create_vacation(vacation: VacationIn):
-    print('vacation', vacation.name)
-    return vacation
+def create_vacation(
+    vacation: VacationIn,
+    response: Response,
+    repo: VacationRepository = Depends()
+):
+    response.status_code = 400
+    return repo.create(vacation)
