@@ -8,5 +8,5 @@ router = APIRouter()
 @router.post("/vacations")
 #from queries
 def create_vacation(vacation: VacationIn):
-    print('vacation', vacation)
+    print('vacation', vacation.name)
     return vacation
