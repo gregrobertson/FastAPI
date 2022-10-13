@@ -12,7 +12,7 @@ steps = [
         """,
         ## Drop the table
         """
-        DROP TABLE vacations 
+        DROP TABLE vacations
         """
     ]
 ]

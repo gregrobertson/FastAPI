@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional # to use OPTIONAL properties
+from typing import List, Optional, Union # to use OPTIONAL properties
 from datetime import date # to use date field property
 from queries.pool import pool
 
@@ -26,6 +26,25 @@ class VacationOut(BaseModel):
 
 
 class VacationRepository: #Repository Pattern
+    def get_all(self) -> Union[Error, List[VacationOut]]:
+        try:
+            # Connect to the database
+            with pool.connection() as conn:
+                # Get a cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    # Run our SELECT statement
+                    db.execute( #no second param needed, since we're getting all of the values
+                        """
+                        SELECT id, name, from_date, to_date, thoughts
+                        FROM vacations
+                        ORDER BY from_date;
+                        """
+                    )
+                    for record in db:
+                        print(record)
+        except Exception:
+            return {"message": "Could not get all vacations"}
+
     def create(self, vacation: VacationIn) -> VacationOut:
         # Connect to the database
         with pool.connection() as conn:
@@ -41,7 +60,7 @@ class VacationRepository: #Repository Pattern
                         (%s, %s, %s, %s)
                     RETURNING id;
                     """,
-                    [
+                    [ # second param for getting specific values
                         vacation.name,
                         vacation.from_date, 
                         vacation.to_date, 

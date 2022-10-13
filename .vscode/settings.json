@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
-        "conninfo"
-    ]
+        "conninfo",
+        "psycopg"
+    ],
+    "python.analysis.typeCheckingMode": "off"
 }

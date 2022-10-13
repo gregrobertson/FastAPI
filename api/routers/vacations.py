@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Response
-from typing import Union
+from typing import Union, List
 from queries.vacations import Error, VacationIn, VacationRepository, VacationOut
 
 #used to define GET, POST, etc.
@@ -15,3 +15,9 @@ def create_vacation(
 ):
     response.status_code = 400
     return repo.create(vacation)
+
+@router.get("/vacations", response_model=List[VacationOut])
+def get_all(
+    repo: VacationRepository = Depends(),
+):
+    return repo.get_all()
