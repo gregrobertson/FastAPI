@@ -46,31 +46,35 @@ class VacationRepository: #Repository Pattern
             return {"message": "Could not get all vacations"}
 
     def create(self, vacation: VacationIn) -> VacationOut:
-        # Connect to the database
-        with pool.connection() as conn:
-            # Get a cursor (something to run SQL with)
-            with conn.cursor() as db:
-                # Run our INSERT statement
-                result = db.execute( 
-                    # %s are variable placeholders
-                    """
-                    INSERT INTO vacations
-                        (name, from_date, to_date, thoughts)
-                    VALUES 
-                        (%s, %s, %s, %s)
-                    RETURNING id;
-                    """,
-                    [ # second param for getting specific values
-                        vacation.name,
-                        vacation.from_date, 
-                        vacation.to_date, 
-                        vacation.thoughts
-                    ]
-                )
+        try:
+            # Connect to the database
+            with pool.connection() as conn:
+                # Get a cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    # Run our INSERT statement
+                    result = db.execute( 
+                        # %s are variable placeholders
+                        """
+                        INSERT INTO vacations
+                            (name, from_date, to_date, thoughts)
+                        VALUES 
+                            (%s, %s, %s, %s)
+                        RETURNING id;
+                        """,
+                        [ # second param for getting specific values
+                            vacation.name,
+                            vacation.from_date, 
+                            vacation.to_date, 
+                            vacation.thoughts
+                        ]
+                    )
 
-                id = result.fetchone()[0]
-                # Return new data
-                old_data = vacation.dict() #turn vacation into a dictionary.
-                # return {"message":"error!"}
-                return VacationOut(id=id, **old_data) # **old_data returns all information from that instance of vacation
+                    id = result.fetchone()[0]
+                    # Return new data
+                    old_data = vacation.dict() #turn vacation into a dictionary.
+                    # return {"message":"error!"}
+                    return VacationOut(id=id, **old_data) # **old_data returns all information from that instance of vacation
+        except Exception:
+            return {"message": "Create did not work"}
+
         
