@@ -2,7 +2,7 @@ steps = [
     [
         ## Create the table
         """
-        CREATE TABLE vacation (
+        CREATE TABLE vacations (
             id SERIAL PRIMARY KEY NOT NULL,
             name VARCHAR(1000) NOT NULL,
             from_date DATE NOT NULL,
@@ -12,7 +12,7 @@ steps = [
         """,
         ## Drop the table
         """
-        DROP TABLE vacation 
+        DROP TABLE vacations 
         """
     ]
 ]

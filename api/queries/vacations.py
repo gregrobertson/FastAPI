@@ -35,7 +35,7 @@ class VacationRepository: #Repository Pattern
                 result = db.execute( 
                     # %s are variable placeholders
                     """
-                    INSERT INTO vacation
+                    INSERT INTO vacations
                         (name, from_date, to_date, thoughts)
                     VALUES 
                         (%s, %s, %s, %s)
@@ -52,6 +52,6 @@ class VacationRepository: #Repository Pattern
                 id = result.fetchone()[0]
                 # Return new data
                 old_data = vacation.dict() #turn vacation into a dictionary.
-                return {"message":"error!"}
+                # return {"message":"error!"}
                 return VacationOut(id=id, **old_data) # **old_data returns all information from that instance of vacation
         
