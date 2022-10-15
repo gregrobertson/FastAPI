@@ -13,7 +13,7 @@ class VacationIn(BaseModel):
     name: str #REQUIRED
     from_date: date #REQUIRED
     to_date: date #REQUIRED
-    thoughts: Optional[str] #NOT REQUIRED ( Optional[type OR class( for complex models)] )
+    thoughts: Optional[str] #NOT REQUIRED (  Optional [type OR class( for complex models)]  )
 
 class VacationOut(BaseModel):
     # Unprocessable Entity Error: missing REQUIRED class properties
@@ -40,9 +40,19 @@ class VacationRepository: #Repository Pattern
                         ORDER BY from_date;
                         """
                     )
+                    result = []
                     for record in db:
-                        print(record)
-        except Exception:
+                        vacation = VacationOut(
+                            id=record[0],
+                            name=record[1],
+                            from_date=record[2],
+                            to_date=record[3],
+                            thoughts=record[4],
+                        )
+                        result.append(vacation)
+                        return result
+        except Exception as e:
+            print(e)
             return {"message": "Could not get all vacations"}
 
     def create(self, vacation: VacationIn) -> VacationOut:

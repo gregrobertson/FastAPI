@@ -16,7 +16,7 @@ def create_vacation(
     response.status_code = 400
     return repo.create(vacation)
 
-@router.get("/vacations", response_model=List[VacationOut])
+@router.get("/vacations", response_model=Union[Error, List[VacationOut]])
 def get_all(
     repo: VacationRepository = Depends(),
 ):
